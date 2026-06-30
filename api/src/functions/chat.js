@@ -57,7 +57,11 @@ app.http('chat', {
   route: 'chat',
   handler: async (request, context) => {
     if (request.method === 'OPTIONS') {
-      return { status: 204, headers: corsHeaders(request) };
+      return {
+        status: 200,
+        headers: corsHeaders(request),
+        body: ''
+      };
     }
 
     if (accessCode && getHeader(request, 'x-access-code') !== accessCode) {
