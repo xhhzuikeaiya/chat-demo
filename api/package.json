@@ -1,0 +1,15 @@
+{
+  "name": "chat-demo-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Azure Functions proxy for Azure OpenAI chat demo",
+  "main": "src/functions/*.js",
+  "scripts": {
+    "start": "func start",
+    "test": "node -e \"require('./src/functions/chat.js'); console.log('Function loaded')\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.7.2"
+  },
+  "devDependencies": {}
+}

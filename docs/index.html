@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="一个适合父母使用的中文 AI 对话体验页" />
+  <title>爸妈 AI 小助手</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="hero" aria-label="应用介绍">
+      <div class="seal">AI</div>
+      <p class="eyebrow">给爸妈用的公开体验页</p>
+      <h1>爸妈 AI 小助手</h1>
+      <p class="subtitle">像家里人一样，慢慢说、说清楚。可以问生活小问题、手机操作、旅行计划、菜谱灵感。</p>
+      <div class="notice">
+        <strong>安全提醒：</strong>不要输入身份证、银行卡、验证码、密码、详细住址等隐私信息。医疗、法律、投资问题请咨询专业人士。
+      </div>
+    </section>
+
+    <section class="chat-card" aria-label="聊天窗口">
+      <div id="messages" class="messages">
+        <article class="message assistant">
+          <div class="avatar">助</div>
+          <div class="bubble">你好呀，我是爸妈 AI 小助手。你可以直接问我，比如“微信怎么发照片？”或者“今天晚饭做什么简单？”</div>
+        </article>
+      </div>
+
+      <div class="quick-actions" aria-label="快捷问题">
+        <button data-prompt="微信里怎么把照片发给孩子？请一步一步说。">微信发照片</button>
+        <button data-prompt="帮我想一个简单、清淡、适合两个人的晚饭。">晚饭吃什么</button>
+        <button data-prompt="坐高铁出门前要准备什么？请列一个清单。">出门清单</button>
+      </div>
+
+      <form id="chatForm" class="composer">
+        <textarea id="userInput" rows="2" placeholder="在这里输入问题……" required></textarea>
+        <button id="sendButton" type="submit">发送</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "AZURE_OPENAI_ENDPOINT": "https://hanhantest03.services.ai.azure.com",
+    "AZURE_OPENAI_DEPLOYMENT": "gpt-5.4",
+    "AZURE_OPENAI_API_VERSION": "2024-12-01-preview",
+    "AZURE_OPENAI_API_KEY": "paste-your-key-locally-only",
+    "ALLOWED_ORIGIN": "https://xhhzuikeaiya.github.io"
+  }
+}
