@@ -327,3 +327,8 @@ textarea:disabled {
   }
 }
 
+
+.access-panel[hidden] {
+  display: none !important;
+}
+
