@@ -22,7 +22,20 @@
       </div>
     </section>
 
-    <section class="chat-card" aria-label="聊天窗口">
+    <section id="chatCard" class="chat-card locked" aria-label="聊天窗口">
+      <div id="accessPanel" class="access-panel">
+        <div class="access-box">
+          <p class="access-kicker">家人访问码</p>
+          <h2>先输入访问码</h2>
+          <p>这是给家人使用的小助手。请输入访问码后再开始聊天。</p>
+          <form id="accessForm" class="access-form">
+            <input id="accessInput" type="password" inputmode="text" autocomplete="off" placeholder="请输入访问码" aria-label="访问码" />
+            <button type="submit">进入</button>
+          </form>
+          <p id="accessError" class="access-error" role="alert"></p>
+        </div>
+      </div>
+
       <div id="messages" class="messages">
         <article class="message assistant">
           <div class="avatar">助</div>

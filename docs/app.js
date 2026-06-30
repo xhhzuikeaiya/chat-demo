@@ -3,9 +3,33 @@ const form = document.querySelector('#chatForm');
 const input = document.querySelector('#userInput');
 const sendButton = document.querySelector('#sendButton');
 const quickButtons = document.querySelectorAll('[data-prompt]');
+const accessForm = document.querySelector('#accessForm');
+const accessInput = document.querySelector('#accessInput');
+const accessError = document.querySelector('#accessError');
+const accessPanel = document.querySelector('#accessPanel');
+const chatCard = document.querySelector('#chatCard');
 
 const config = window.CHAT_CONFIG || {};
 const history = [];
+let currentAccessCode = sessionStorage.getItem('chat_demo_access_code') || '';
+
+function setChatUnlocked(isUnlocked) {
+  if (isUnlocked) {
+    accessPanel.hidden = true;
+    chatCard.classList.remove('locked');
+    input.disabled = false;
+    sendButton.disabled = false;
+    quickButtons.forEach((button) => { button.disabled = false; });
+    input.focus();
+  } else {
+    accessPanel.hidden = false;
+    chatCard.classList.add('locked');
+    input.disabled = true;
+    sendButton.disabled = true;
+    quickButtons.forEach((button) => { button.disabled = true; });
+    accessInput.focus();
+  }
+}
 
 function addMessage(role, content) {
   const article = document.createElement('article');
@@ -44,11 +68,20 @@ async function sendMessage(text) {
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Access-Code': currentAccessCode
+      },
       body: JSON.stringify({ messages: history.slice(-12) })
     });
 
     const data = await response.json().catch(() => ({}));
+    if (response.status === 401) {
+      sessionStorage.removeItem('chat_demo_access_code');
+      currentAccessCode = '';
+      setChatUnlocked(false);
+      throw new Error(data.error || '访问码不正确');
+    }
     if (!response.ok) {
       throw new Error(data.error || '请求失败');
     }
@@ -60,9 +93,22 @@ async function sendMessage(text) {
     addMessage('assistant', `抱歉，刚刚连接失败：${error.message}。请稍后再试。`);
   } finally {
     setLoading(false);
-    input.focus();
+    if (currentAccessCode) input.focus();
   }
 }
+
+accessForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const code = accessInput.value.trim();
+  if (!code) {
+    accessError.textContent = '请先输入访问码。';
+    return;
+  }
+  currentAccessCode = code;
+  sessionStorage.setItem('chat_demo_access_code', code);
+  accessError.textContent = '';
+  setChatUnlocked(true);
+});
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -78,3 +124,5 @@ quickButtons.forEach((button) => {
     input.focus();
   });
 });
+
+setChatUnlocked(Boolean(currentAccessCode));

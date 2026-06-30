@@ -225,3 +225,105 @@ textarea:disabled {
   #sendButton { min-height: 54px; }
   .bubble { max-width: 84%; }
 }
+
+.access-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(255, 248, 232, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.chat-card {
+  position: relative;
+}
+
+.access-box {
+  width: min(430px, 100%);
+  padding: 28px;
+  border: 1px solid rgba(48, 39, 25, 0.14);
+  border-radius: 28px;
+  background: #fffef8;
+  box-shadow: 0 22px 70px rgba(69, 43, 20, 0.18);
+}
+
+.access-kicker {
+  margin: 0;
+  color: var(--red);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.access-box h2 {
+  margin: 10px 0 0;
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: 44px;
+  line-height: 1;
+}
+
+.access-box p {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.access-form {
+  display: grid;
+  grid-template-columns: 1fr 92px;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.access-form input {
+  min-width: 0;
+  border: 1px solid rgba(48,39,25,.16);
+  border-radius: 18px;
+  padding: 14px 16px;
+  color: var(--ink);
+  background: #fffaf0;
+  font: inherit;
+  font-size: 18px;
+  outline: none;
+}
+
+.access-form input:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 4px rgba(181,67,50,.12);
+}
+
+.access-form button {
+  border: 0;
+  border-radius: 18px;
+  color: #fff8e8;
+  background: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.access-error {
+  min-height: 24px;
+  margin: 10px 0 0;
+  color: var(--red) !important;
+  font-weight: 700;
+}
+
+.chat-card.locked .messages,
+.chat-card.locked .quick-actions,
+.chat-card.locked .composer {
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+@media (max-width: 520px) {
+  .access-form {
+    grid-template-columns: 1fr;
+  }
+
+  .access-form button {
+    min-height: 52px;
+  }
+}
+
