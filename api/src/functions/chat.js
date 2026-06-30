@@ -1,4 +1,4 @@
-const { app } = require('@azure/functions');
+﻿const { app } = require('@azure/functions');
 
 const endpoint = (process.env.AZURE_OPENAI_ENDPOINT || '').replace(/\/$/, '');
 const deployment = process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-5.4';
@@ -37,69 +37,26 @@ app.http('chat', {
     if (request.method === 'OPTIONS') {
       return { status: 204, headers: corsHeaders() };
     }
-
     if (!endpoint || !apiKey) {
-      return {
-        status: 500,
-        headers: corsHeaders(),
-        jsonBody: { error: 'Server is missing Azure OpenAI configuration.' }
-      };
+      return { status: 500, headers: corsHeaders(), jsonBody: { error: 'Server is missing Azure OpenAI configuration.' } };
     }
-
     let body;
-    try {
-      body = await request.json();
-    } catch {
-      return { status: 400, headers: corsHeaders(), jsonBody: { error: 'Invalid JSON body.' } };
-    }
-
+    try { body = await request.json(); } catch { return { status: 400, headers: corsHeaders(), jsonBody: { error: 'Invalid JSON body.' } }; }
     const messages = safeMessages(body.messages);
-    if (!messages.length) {
-      return { status: 400, headers: corsHeaders(), jsonBody: { error: 'Missing messages.' } };
-    }
-
+    if (!messages.length) return { status: 400, headers: corsHeaders(), jsonBody: { error: 'Missing messages.' } };
     const url = `${endpoint}/openai/deployments/${encodeURIComponent(deployment)}/chat/completions?api-version=${apiVersion}`;
-
-    const payload = {
-      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-      max_completion_tokens: 900
-    };
-
+    const payload = { messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages], max_completion_tokens: 900 };
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'api-key': apiKey
-        },
-        body: JSON.stringify(payload)
-      });
-
+      const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'api-key': apiKey }, body: JSON.stringify(payload) });
       const data = await response.json().catch(() => ({}));
-
       if (!response.ok) {
         context.error('Azure OpenAI error', response.status, data);
-        return {
-          status: response.status,
-          headers: corsHeaders(),
-          jsonBody: { error: data?.error?.message || 'Azure OpenAI request failed.' }
-        };
+        return { status: response.status, headers: corsHeaders(), jsonBody: { error: data?.error?.message || 'Azure OpenAI request failed.' } };
       }
-
-      return {
-        status: 200,
-        headers: corsHeaders(),
-        jsonBody: {
-          reply: data?.choices?.[0]?.message?.content || '抱歉，我刚刚没有生成有效回复，请再试一次。'
-        }
-      };
+      return { status: 200, headers: corsHeaders(), jsonBody: { reply: data?.choices?.[0]?.message?.content || '抱歉，我刚刚没有生成有效回复，请再试一次。' } };
     } catch (error) {
       context.error(error);
-      return {
-        status: 500,
-        headers: corsHeaders(),
-        jsonBody: { error: 'Server error while calling Azure OpenAI.' }
-      };
+      return { status: 500, headers: corsHeaders(), jsonBody: { error: 'Server error while calling Azure OpenAI.' } };
     }
   }
 });
